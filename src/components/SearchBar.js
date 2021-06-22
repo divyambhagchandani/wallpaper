@@ -10,7 +10,7 @@ class SearchBar extends React.Component {
 
   render() {
       const hstyle={
-        fontSize:"500%",
+        fontSize:"200%",
         margin:"10px"
       };
     return (
