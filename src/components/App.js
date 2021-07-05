@@ -22,16 +22,48 @@ class App extends React.Component{
         this.setState({images:response.data.results,pg:pg,term:term});
     }
 
-    render(){
+    randomImages = async ()=>{
+        const response= await unsplash.get('/photos/random',{
+            params: {
+                count: 20,
+            },
+         });
+        console.log(response)
+        this.setState({images:response.data});
+    }
 
+    componentDidMount(){
+        if(this.state.term===''){
+            this.randomImages();
+        }
+    }
+    
+    render(){    
         const nextPage = () =>{
-            if (this.state.images.length!==0){
-                return <h3 onClick={()=>this.onSearchSubmit(this.state.term,this.state.pg+1)}>Next Page</h3>
+            if (this.state.term!=='' && this.state.pg>1){
+                return (
+                    
+                    <div style={{textAlign:"center"}}>
+                        <br />
+                    <div style={{fontFamily:"sans-serif", display:"inline", fontSize:"3em"}} onClick={()=>this.onSearchSubmit(this.state.term,this.state.pg-1)}>←</div>
+                    <div style={{fontFamily:"sans-serif", display:"inline", fontSize:"3em"}} onClick={()=>this.onSearchSubmit(this.state.term,this.state.pg+1)}>→</div>
+                    </div>
+                )
+            } else if (this.state.term!==''){
+                return(
+                <div style={{fontFamily:"sans-serif", display:"inline", fontSize:"3em",textAlign:"center"}} onClick={()=>this.onSearchSubmit(this.state.term,this.state.pg+1)}>→</div>
+                )
+            };
+        };
+        const PageNo = () =>{
+            if (this.state.term!==''){
+                return <div >Page {this.state.pg}</div>
             };
         };
         return (
             <div className="ui container all"> 
                 <SearchBar onSubmit={this.onSearchSubmit} />
+                {PageNo()}
                 <ImageList images={this.state.images} />
                 {nextPage()}
                 <br/>

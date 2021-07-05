@@ -13,13 +13,13 @@ class ImageCard extends React.Component {
 
     setSpans = () => {
         const height= this.imageRef.current.clientHeight;
-        const spans = Math.ceil(height/10)+1;
+        const spans = Math.ceil(height/10)+2;
         this.setState({spans});
     }
 
     render(){
-        const {description,urls} = this.props.image;
-        // console.log(urls);
+        const {description,urls,user} = this.props.image;
+        const link = "https://unsplash.com/@"+user.username+"?utm_source=react_pics&utm_medium=referral";
         return(
             <div style={{gridRowEnd:`span ${this.state.spans}`}}>
                 <a href={urls.raw}>
@@ -29,6 +29,10 @@ class ImageCard extends React.Component {
                     src={urls.regular}
                 />
                 </a>
+                <div style={{fontSize:"0.5em", fontFamily: "sans-serif", color: "#6e6e6e"}}>
+                    Photo by <a href={link}> {user.first_name+" "+user.last_name} </a>on <a href="https://unsplash.com/">Unsplash</a>
+                </div>
+
             </div>
         )
     }
